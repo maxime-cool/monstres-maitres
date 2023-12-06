@@ -1,0 +1,100 @@
+openapi: 3.1.0
+info:
+  title: Market
+  version: 0.1
+  description: Market service API, regulating the game's economy - all resources are created and/or deleted through this service
+tags:
+- name: admins
+  description: game admins
+- name: reporters
+  description: can extract stats from the game
+- name: users
+  description: default
+paths:
+  /in_sale:
+    get:
+      tags:
+        - users
+      summary: returns the list of monsters in sale
+      responses:
+        "200":
+          description: gets the list of creatures in sale
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllMonstersInSale"
+
+  # /price:
+  #   get:
+  #     tags:
+  #       - users
+  #     summary: returns a monster's price
+  #     parameters:
+  #       - name: monster_id
+  #         in: query
+  #         description: ID of the monster the price of which should be returned
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       "200":
+  #         description: price was returned
+  /buy_monster:
+    get:
+      tags:
+        - users
+      summary: buys a monster if user has enough credit - adds it to the instantiated monsters DB
+      parameters:
+        - name: user_id
+          in: query
+          description: ID of the user making the purchase
+          required: true
+          schema:
+            type: string
+        - name: monster_id
+          in: query
+          description: ID of the monster
+          required: true
+          schema:
+            type: string
+  /add_monster:
+    put:
+      tags: 
+       - admins
+      summary: adds a monster to the store - does not add it to the instantiated monsters DB
+      parameters:
+        - name: dex_ref
+          in: query
+          description: dex reference of the monster that has to be created
+          required: true
+          schema:
+            type: int
+  
+components:
+  schemas:
+    AllMonstersInSale:
+      type: object
+      required:
+        - monsters
+      properties:
+        monsters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/MonsterInSale'
+    MonsterInSale:
+      type: object
+      required:
+        - dex_ref
+        - power
+        - price
+      properties:
+        dex_ref:
+          type: int
+          example: 3
+        power:
+          type: int
+          example: 6
+        price:
+          type: int
+          example: 300

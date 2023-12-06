@@ -8,11 +8,11 @@ info:
   version: '1.0'
 tags:
 - name: admins
-  description: Secured Admin-only calls
-- name: developers
-  description: Operations available to regular developers
+  description: game admins
+- name: reporters
+  description: can extract stats from the game
 - name: users
-  description: Operations available to users
+  description: default
 servers:
   - url: https://api.server.user/v1
 paths:
@@ -80,7 +80,7 @@ paths:
   /user_info:
     get:
       tags:
-        - developers
+        - users
       summary: Get the information of the user
       description: Get all the information of the user
       operationId: get_user_info
@@ -171,7 +171,7 @@ paths:
   /player_get_players:
     get:
       tags:
-        - developers
+        - users
       summary: Get the list of all the players
       description: Get the list of all the players
       operationId: get_players_list

@@ -1,0 +1,73 @@
+---
+openapi: 3.1.0
+info:
+  title: Message API
+  summary: This is the API of the message service
+  description: 
+tags:
+- name: admins
+  description: game admins
+- name: reporters
+  description: can extract stats from the game
+- name: users
+  description: default
+paths:
+  /message/{userid}:
+    post:
+      tags:
+      - users
+      operationId: send_message
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+    /message/{userid}:
+    get:
+      tags:
+      - users
+      summary: get the messages from a user
+      operationId: get_messages_by_userid
+      parameters:
+      - name: userid
+        in: path
+        description: user ID.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: messages of the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allmessages'
+        "400":
+          description: bad input parameter
+components:
+  schemas:
+    AllMessages:
+      type: array
+      items:
+        $ref: '#/components/schemas/Message'
+    Message:
+      type: object
+      required:
+        - id
+        - texte
+        - date
+      properties:
+        id:
+          type: int
+          example: 1
+        texte:
+          type: string
+          example: "Coucou, comment ça va ?"
+        date:
+          type: int
+          example: 06122023
+
+
