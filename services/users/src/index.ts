@@ -7,7 +7,6 @@ const port = 5000;
 const host = '0.0.0.0'
 
 const startServer = async () => {
-    console.log("log")
     try {
         const server = fastify()
 
@@ -15,8 +14,7 @@ const startServer = async () => {
             server.log.error(error, address);
         }
 
-        server.register(userRouter, { prefix : '/api/user'})
-        console.log("log")
+        server.register(userRouter, { prefix : '/api/users'})
         server.listen({host, port }, errorHandler)
     } catch (e) {
         console.error(e)
