@@ -47,6 +47,7 @@ paths:
     get:
       tags:
         - developers
+        - admins
       summary: Get the list of all the matches
       description: Get the list of all the matches
       operationId: get_list_matches
@@ -127,6 +128,7 @@ paths:
     put:
       tags:
         - developers
+        - admins
       summary: Update the match information after starting the match
       description: Update the match information after starting the match
       operationId: play_match
@@ -140,11 +142,26 @@ paths:
             type: string
         - name: round
           in: path
-          description: round in progress
+          description: id of round in progress
           required: true
           style: simple
           schema: 
             type: string
+  /delete:
+    delete:
+      tags:
+        - admins
+      summary: Delete a match
+      description: Delete a match
+      operationId: delete_match
+      parameters:
+        - name: match_id
+          in: path
+          description: id of the match
+          required: true
+          style: simple
+          schema:
+            type: string   
 
 components:
   schemas:
