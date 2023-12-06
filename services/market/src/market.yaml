@@ -18,7 +18,12 @@ paths:
       summary: returns the list of monsters in sale
       responses:
         "200":
-          description: the list was returned
+          description: gets the list of creatures in sale
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllMonstersInSale"
+
   /price:
     get:
       tags:
@@ -27,7 +32,7 @@ paths:
       parameters:
         - name: monster_id
           in: query
-          description: ID of the monster price of which should be returned
+          description: ID of the monster the price of which should be returned
           required: true
           schema:
             type: string
@@ -65,3 +70,31 @@ paths:
           schema:
             type: int
   
+components:
+  schemas:
+    AllMonstersInSale:
+      type: object
+      required:
+        - monsters
+      properties:
+        monsters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/MonsterInSale'
+    MonsterInSale:
+      type: object
+      required:
+        - dex_ref
+        - power
+        - price
+      properties:
+        dex_ref:
+          type: int
+          example: 3
+        power:
+          type: int
+          example: 6
+        price:
+          type: int
+          example: 300
