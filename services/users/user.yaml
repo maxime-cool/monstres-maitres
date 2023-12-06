@@ -144,7 +144,8 @@ paths:
   /credits:
     put:
       tags:
-        - users
+        - developers
+        - admins
       summary: Update the user credit
       description: Update the user credit
       operationId: update_user_credit
@@ -243,6 +244,29 @@ paths:
     #       description: Creature created for user successfully
     #     '409':
     #       description: an existing user already exists
+  
+  /delete_player:
+    delete:
+      tags:
+        - admins
+      summary: Delete the palyer by id
+      description: Delete the palyer by id
+      operationId: delete_palyer_byid
+      parameters:
+        - name: id
+          in: query
+          description: id of the player1
+          required: true
+          style: form
+          schema: 
+            type: string
+        - name: role
+          in: query
+          description: role of the user to be deleted
+          required: true
+          style: form
+          schema:
+            type: string
 
 components:
   schemas:

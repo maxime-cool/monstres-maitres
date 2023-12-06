@@ -1,0 +1,99 @@
+openapi: '3.0.2'
+info:
+  title: Matchmaking
+  version: '0.1'
+  description: Matchmaking service API - allowing to create matches
+tags:
+  - name: admins
+    description: game admins
+  - name: reporters
+    description: can extract stats from the game
+  - name: users
+    description: default
+paths:
+  /list:
+    get:
+      tags:
+        - admins
+      summary: returns the list of pending matches (a player is waiting for an opponent)
+      responses:
+        "200":
+          description: got the list of pending matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllPendingMatches'
+  /research:
+    post: 
+      tags:
+        - users
+      summary: a user wants to play a match - they're waiting for an opponent
+      parameters:
+        - name: user_id
+          in: query
+          description: ID of the user opening the match
+          required: true
+          schema:
+            type: string
+        - name: open
+          in: query
+          description: equals false if match is private, true if it is open to everyone
+          required: true
+          schema:
+            type: boolean
+        - name: opponent
+          in: query
+          description: if match is private, the ID of the challenged user
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: pending match created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingMatch'
+    delete:
+      tags:
+        - users
+      summary: opponent was found - or p1 wants to cancel their match research
+      parameters:
+        - name: user_id
+          in: query
+          description: ID of the user searching for the match
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: pending match deleted
+        '406':
+          description: user was not searching for a match
+      
+components:
+  schemas:
+    PendingMatch:
+      type: object
+      required:
+        - p1
+        - created_at
+        - open
+      properties:
+        p1:
+          type: integer
+          example: 43 # a user id
+        created_at:
+          type: string
+        open: 
+          type: boolean
+          example: true
+        opponent:
+          type: string
+          example: 44 # a user id
+    AllPendingMatches:
+      type: array
+      items:
+        type: object
+        $ref: '#/components/schemas/PendingMatch'
+      
