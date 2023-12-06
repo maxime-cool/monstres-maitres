@@ -21,8 +21,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Monstre'
+    get:
+      tags:
+      - developers
+      operationId: get_monstre
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monstre'
+    /monstre/{masterid}:
+    get:
+      tags:
+      - developers
+      summary: get the monsters from a master
+      operationId: get_monsters_by_masterid
+      parameters:
+      - name: masterid
+        in: path
+        description: Master ID.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Monsters of the master
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllMonsters'
+        "400":
+          description: bad input parameter
 components:
   schemas:
+    AllMonsters:
+      type: array
+      items:
+        $ref: '#/components/schemas/Monstre'
     Monstre:
       type: object
       required:
@@ -34,6 +72,7 @@ components:
         - master_id
         - prix 
         - num_equipe
+        - monsterdex_ref
       properties:
         id:
           type: int
@@ -59,5 +98,8 @@ components:
         num_equipe:
           type: int 
           example: 1
+        monsterdex_ref:
+          type: int
+          example: 3
 
 

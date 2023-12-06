@@ -1,0 +1,75 @@
+---
+openapi: 3.1.0
+info:
+  title: Badge API
+  summary: This is the API of the Badge service
+  description: 
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+paths:
+  /badge:
+    post:
+      tags:
+      - developers
+      operationId: add_badge
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+    /badge/{masterid}:
+    get:
+      tags:
+      - developers
+      summary: get the badges from a master
+      operationId: get_badges_by_masterid
+      parameters:
+      - name: masterid
+        in: path
+        description: Master ID.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: badges of the master
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllBadges'
+        "400":
+          description: bad input parameter
+components:
+  schemas:
+    AllBadges:
+      type: array
+      items:
+        $ref: '#/components/schemas/Badge'
+    Badge:
+      type: object
+      required:
+        - id
+        - description
+        - date
+        - master_id
+      properties:
+        id:
+          type: int
+          example: 1
+        description:
+          type: string
+          example: "5 victoires pour un monstre"
+        date:
+          type: int
+          example: 06122023
+        master_id:
+          type: int 
+          example: 2
+
+
