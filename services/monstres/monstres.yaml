@@ -15,7 +15,7 @@ paths:
   /monstre:
     post:
       tags:
-      - developers
+      - users
       operationId: add_monstre
       responses:
         "200":
@@ -25,7 +25,7 @@ paths:
                 $ref: '#/components/schemas/Monstre'
     get:
       tags:
-      - developers
+      - users
       operationId: get_monstre
       responses:
         "200":
@@ -36,7 +36,7 @@ paths:
     /monstre/{masterid}:
     get:
       tags:
-      - developers
+      - users
       summary: get the monsters from a master
       operationId: get_monsters_by_masterid
       parameters:

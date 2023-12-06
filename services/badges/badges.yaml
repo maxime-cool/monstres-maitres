@@ -15,7 +15,7 @@ paths:
   /badge:
     post:
       tags:
-      - developers
+      - users
       operationId: add_badge
       responses:
         "200":
@@ -26,7 +26,7 @@ paths:
     /badge/{masterid}:
     get:
       tags:
-      - developers
+      - users
       summary: get the badges from a master
       operationId: get_badges_by_masterid
       parameters:
