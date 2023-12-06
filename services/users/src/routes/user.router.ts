@@ -3,6 +3,12 @@ import * as controllers from '../controllers'
 
 async function userRouter(fastify: FastifyInstance) {
 
+    fastify.route({
+        method: 'POST',
+        url: '/',
+        handler: controllers.addUser
+    }) 
+
     /*fastify.route({
         method: 'GET',
         url: '/',
@@ -13,13 +19,7 @@ async function userRouter(fastify: FastifyInstance) {
         method: 'GET',  
         url: '/:userId',
         handler: controllers.getUser
-    })
-
-    fastify.route({
-        method: 'POST',
-        url: '/',
-        handler: controllers.addUser
-    })  
+    }) 
 
      fastify.route({
         method: 'PUT',
