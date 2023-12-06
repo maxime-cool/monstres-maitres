@@ -9,16 +9,20 @@ tags:
 - name: reporters
   description: can extract stats from the game
 - name: users
-  description: default player
+  description: default
 paths:
   /in_sale:
     get:
+      tags:
+        - users
       summary: returns the list of monsters in sale
       responses:
         "200":
           description: the list was returned
   /price:
     get:
+      tags:
+        - users
       summary: returns a monster's price
       parameters:
         - name: monster_id
@@ -32,6 +36,8 @@ paths:
           description: price was returned
   /buy_monster:
     get:
+      tags:
+        - users
       summary: buys a monster if user has enough credit - adds it to the instantiated monsters DB
       parameters:
         - name: user_id
@@ -49,7 +55,7 @@ paths:
   /add_monster:
     put:
       tags: 
-       -admins
+       - admins
       summary: adds a monster to the store - does not add it to the instantiated monsters DB
       parameters:
         - name: dex_ref
