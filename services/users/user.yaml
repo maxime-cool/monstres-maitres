@@ -8,11 +8,11 @@ info:
   version: '1.0'
 tags:
 - name: admins
-  description: Secured Admin-only calls
-- name: developers
-  description: Operations available to regular developers
+  description: game admins
+- name: reporters
+  description: can extract stats from the game
 - name: users
-  description: Operations available to users
+  description: default
 servers:
   - url: https://api.server.user/v1
 paths:

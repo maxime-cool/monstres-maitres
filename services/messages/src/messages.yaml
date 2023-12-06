@@ -1,8 +1,8 @@
 ---
 openapi: 3.1.0
 info:
-  title: Badge API
-  summary: This is the API of the Badge service
+  title: Message API
+  summary: This is the API of the message service
   description: 
 tags:
 - name: admins
@@ -12,27 +12,27 @@ tags:
 - name: users
   description: default
 paths:
-  /badge:
+  /message/{userid}:
     post:
       tags:
       - developers
-      operationId: add_badge
+      operationId: send_message
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Badge'
-    /badge/{masterid}:
+                $ref: '#/components/schemas/Message'
+    /message/{userid}:
     get:
       tags:
       - developers
-      summary: get the badges from a master
-      operationId: get_badges_by_masterid
+      summary: get the messages from a user
+      operationId: get_messages_by_userid
       parameters:
-      - name: masterid
+      - name: userid
         in: path
-        description: Master ID.
+        description: user ID.
         required: true
         style: simple
         explode: false
@@ -40,38 +40,34 @@ paths:
           type: string
       responses:
         "200":
-          description: badges of the master
+          description: messages of the user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllBadges'
+                $ref: '#/components/schemas/Allmessages'
         "400":
           description: bad input parameter
 components:
   schemas:
-    AllBadges:
+    AllMessages:
       type: array
       items:
-        $ref: '#/components/schemas/Badge'
-    Badge:
+        $ref: '#/components/schemas/Message'
+    Message:
       type: object
       required:
         - id
-        - description
+        - texte
         - date
-        - master_id
       properties:
         id:
           type: int
           example: 1
-        description:
+        texte:
           type: string
-          example: "5 victoires pour un monstre"
+          example: "Coucou, comment ça va ?"
         date:
           type: int
           example: 06122023
-        master_id:
-          type: int 
-          example: 2
 
 

@@ -6,9 +6,11 @@ info:
   description: 
 tags:
 - name: admins
-  description: Secured Admin-only calls
-- name: developers
-  description: Operations available to regular developers
+  description: game admins
+- name: reporters
+  description: can extract stats from the game
+- name: users
+  description: default
 paths:
   /monstre:
     post:
