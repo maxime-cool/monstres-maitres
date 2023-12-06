@@ -1,0 +1,168 @@
+openapi: '3.1.0'
+info:
+  title: Match API
+  description: This is the API of the Match service in Monstre-Maître
+  license:
+    name: GPL v3
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  version: '1.0'
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+- name: users
+  description: Operations available to users
+servers:
+  - url: https://api.server.match/v1
+paths:
+  /create:
+    post:
+      tags:
+        - users
+      summary: Create a new match
+      description: Create a new match
+      operationId: create_match
+      parameters:
+        - name: user_id
+          in: path
+          description: user id of the user who create the match
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: inviters
+          in: query
+          description: users who are invited into this match
+          required: false
+          style: form
+          schema:
+            type: array
+      responses:
+        '201':
+          description: match created successfully
+        '409':
+          description: User can not create the match
+  /matches:
+    get:
+      tags:
+        - developers
+      summary: Get the list of all the matches
+      description: Get the list of all the matches
+      operationId: get_list_matches
+      responses:
+        '200':
+          description: got the list of matches successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchList'
+  /match_details:
+    get:
+      tags:
+        - developers
+      summary: Get the details of a match
+      description: Get the details of a match
+      operationId: get_details_match
+      responses:
+        '200':
+          description: got the details of the matche successfully
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/MatchDetail'
+  /round:
+    get:
+      tags:
+        - developers
+      summary: Get the details of a round
+      description: Get the details of a round
+      operationId: get_details_round
+      responses:
+        '200':
+          description: got the details of the round successfully
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/RoundDetail'
+
+components:
+  schemas:
+    MatchList:
+      type: object
+      required:
+        - matches
+      properties:
+        matches:
+          type: array
+          items:
+            type: string
+            example: xxxxxxxxxx
+    MatchDetail:
+      type: object
+      required:
+        - players
+        - status
+      properties:
+        players:
+          type: array
+          items:
+            type: string
+            example: player1
+        status:
+          type: string
+          enum:
+            - in progress
+            - finished
+            - cancelled
+          example: finished
+
+        round_in_progress:
+          type: integer
+          nullable: true
+          example: 1
+          if: "status !== 'in_progress'"
+        winner:
+          type: string
+          example: player1
+          nullable: true
+          if: "status !== 'in_progress'"
+
+    creature_master:
+      type: object
+      required:
+        - creature
+        - master
+      properties:
+        creature:
+          type: string
+          example: creature1
+        master:
+          type: string
+          example: player1
+
+    RoundDetail:
+      type: object
+      required:
+        - creatures_masters
+        - status
+      properties:
+        creatures_masters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/creature_master'
+        status:
+          type: string
+          enum:
+            - in progress
+            - finished
+          example: finished
+        winner:
+          type: string
+          example: creature1
+          nullable: true
+          if: "status !== 'in_progress'"
+  /join:
+  
+  /play:
