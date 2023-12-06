@@ -3,6 +3,13 @@ info:
   title: Market
   version: 0.1
   description: Market service API, regulating the game's economy - all resources are created and/or deleted through this service
+tags:
+- name: admins
+  description: game admins
+- name: reporters
+  description: can extract stats from the game
+- name: users
+  description: default player
 paths:
   /in_sale:
     get:
