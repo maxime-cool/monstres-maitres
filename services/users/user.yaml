@@ -1,0 +1,305 @@
+openapi: '3.1.0'
+info:
+  title: User API
+  description: This is the API of the User service in Monstre-Maître
+  license:
+    name: GPL v3
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  version: '1.0'
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+- name: users
+  description: Operations available to users
+servers:
+  - url: https://api.server.user/v1
+paths:
+  /create_account:
+    post:
+      tags:
+        - users
+      summary: Create a new user account
+      description: Create a new user account to the system
+      operationId: create_user
+      parameters:
+        - name: name 
+          in: query
+          description: username of the account
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: email of the account
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: password of the account
+          required: true
+          style: form
+          schema:
+            type: string
+      responses:
+        '201':
+          description: User created successfully
+        '409':
+          description: an existing user already exists
+  /login:
+    post:
+      tags:
+        - users
+      summary: Login to an existing account
+      description: Post a login request to the system to Login to an existing account
+      operationId: login
+      parameters:
+        - name: name
+          in: query
+          description: username of the account
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: password of the account
+          required: true
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: login to the account successfully
+        '400':
+          description: users not found
+  /user_info:
+    get:
+      tags:
+        - developers
+      summary: Get the information of the user
+      description: Get all the information of the user
+      operationId: get_user_info
+      parameters:
+        - name: id
+          in: path
+          description: user id of the account
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+          '200':
+            description: get the user information successfully
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          '400':
+            description: users not found
+    put:
+      tags:
+        - users
+      summary: Update the user information
+      description: Update the user information
+      operationId: update_user_info
+      parameters:
+        - name: id
+          in: path
+          description: user id of the account
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: name 
+          in: query
+          description: username of the account
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: email of the account
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: password of the account
+          required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+            description: update the user information successfully
+        '400':
+          description: user not found
+  /credits:
+    put:
+      tags:
+        - users
+      summary: Update the user credit
+      description: Update the user credit
+      operationId: update_user_credit
+      parameters:
+        - name: id
+          in: path
+          description: user id of the account
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: credit
+          in: query
+          description: new credit points waiting to be update
+          required: true
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+            description: update the user credit successfully
+        '400':
+          description: user not found
+  /player_get_players:
+    get:
+      tags:
+        - developers
+      summary: Get the list of all the players
+      description: Get the list of all the players
+      operationId: get_players_list
+      responses:
+          '200':
+            description: get the list of players successfully
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AllPlayers'
+  /admin_get_players:
+    get:
+      tags:
+        - admins
+      summary: Get the list of all the players with all the information
+      description: Get the list of all the players with all the information
+      operationId: get_players_info
+      responses:
+          '200':
+            description: get the list of players successfully
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AllUsers'
+  /creatures:
+    get:
+      tags:
+        - developpers
+      summary: Get the list of creatures of the given user by id
+      description: Get the list of creatures of the given user by id
+      operationId: get_creatures_byid
+      responses: 
+        '200':
+          description: get the list of creatures successfully
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/AllCreatures'
+
+
+components:
+  schemas:
+    AllPlayers:
+      type: object
+      required:
+        - players
+      properties:
+        players:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Player'
+    Player:
+      type: object
+      required:
+        - name
+        - matches
+        - credits
+        - badges
+      properties:
+        name:
+          type: string
+          example: Martian
+        matches:
+          type: array
+          example: 
+            winning matches: 17
+            losing matches: 4
+        credit:
+          type: integer
+          example: 5
+        badges:
+          type: integer
+          example: 32
+    AllUsers:
+      type: object
+      required:
+        - users
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - password
+        - credits
+        - matches
+        - badges
+      properties:
+        id:
+          type: string
+          example: xxxxxxxxxx
+        name:
+          type: string
+          example: Martian
+        email:
+          type: string
+          example: Martian@gmail.com
+        password:
+          type: string
+          example: xxxxxxxxxx
+        credits:
+          type: integer
+          example: 5
+        matches:
+          type: array
+          example: 
+            winning matches: 17
+            losing matches: 4
+        badges:
+          type: integer
+          example: 32
+    AllCreatures:
+      type: object
+      required:
+        - creatures
+      properties:
+        players:
+          type: array
+          items:
+            type: string
+            example: creature1
+
+  
+          
