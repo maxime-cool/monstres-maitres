@@ -1,0 +1,7 @@
+openapi: 3.1.0
+info:
+  title: Market
+  version: 0.0.1
+  description: API du service Market, qui permet aux utilisateurs d'interagir avec l'économie du jeu
+paths:
+  / 
