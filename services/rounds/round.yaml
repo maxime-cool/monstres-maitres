@@ -1,0 +1,107 @@
+openapi: '3.1.0'
+info:
+  title: Round API
+  description: This is the API of the Round service in Monstre-Maître
+  license:
+    name: GPL v3
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  version: '1.0'
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+- name: users
+  description: Operations available to users
+servers:
+  - url: https://api.server.round/v1
+paths:
+  /create:
+    post:
+      tags:
+        - users
+      summary: Create a new round
+      description: Create a new round
+      operationId: create_round
+      parameters:
+        - name: match_id
+          in: query
+          description: match where creates the round
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: player1_id
+          in: query
+          description: first players who joins this round
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: player2_id
+          in: query
+          description: second players who joins this round
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: number
+          in: query
+          description: The number of match to create
+          required: true
+          style: form
+          schema:
+            type: integer
+        - name: creature_player1
+          in: query
+          description: the creature of first players who joins this round
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: creature_player2
+          in: query
+          description: the creature of second players who joins this round
+          required: true
+          style: form
+          schema:
+            type: string
+      responses:
+        '201':
+          description: round created successfully
+        '400':
+          description: Bad request for lacking information
+  /update:
+    put:
+      tags:
+        - users
+      summary: Change the round by sending a new creature
+      description: Change the round by sending a new creature
+      operationId: update_round
+      parameters:
+        - name: round_id
+          in: path
+          description: id of the round
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: player_id
+          in: query
+          description: id of the user to change
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: creature_id
+          in: query
+          description: id of the creature to add
+          required: true
+          style: form
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: round updated successfully
+        '400':
+          description: Bad request with bad information
