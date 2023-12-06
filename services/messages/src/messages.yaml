@@ -15,7 +15,7 @@ paths:
   /message/{userid}:
     post:
       tags:
-      - developers
+      - users
       operationId: send_message
       responses:
         "200":
@@ -26,7 +26,7 @@ paths:
     /message/{userid}:
     get:
       tags:
-      - developers
+      - users
       summary: get the messages from a user
       operationId: get_messages_by_userid
       parameters:

@@ -1,0 +1,69 @@
+---
+openapi: 3.1.0
+info:
+  title: Monstredex API
+  summary: This is the API of the Monstredex service
+  description: This is the list of all available monsters of the game
+tags:
+- name: admins
+  description: game admins
+- name: reporters
+  description: can extract stats from the game
+- name: users
+  description: default
+paths:
+  /monstredex:
+    get:
+      tags:
+      - users
+      - reporters
+      - admins
+      operationId: get_all_monstres
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllMonsters'
+    /monstredex:
+      post:
+        tags:
+        - admins
+      summary: admin can create a monster and add it to monstredex
+      operationId: create_monster
+      responses:
+        "200":
+          description: New monster
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monstre'
+        "400":
+          description: bad input parameter
+components:
+  schemas:
+    AllMonsters:
+      type: array
+      items:
+        $ref: '#/components/schemas/Monstre'
+    Monstre:
+      type: object
+      required:
+        - monsterdex_ref
+        - name
+        - puissance
+        - prix 
+      properties:
+        monsterdex_ref:
+          type: int
+          example: 3
+        name:
+          type: string
+          example: "Pikachu"
+        puissance:
+          type: int
+          example: 100
+        prix:
+          type: int 
+          example: 200
+
