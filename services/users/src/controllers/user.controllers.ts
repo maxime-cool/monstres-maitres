@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-//import { IUser } from "interfaces";
-import * as db from 'zapatos/db';
-import type * as s from 'zapatos/schema';
-import pool from '../db/pgPool';
+import { IUser } from "interfaces";
+import type * as s from 'zapatos/schema'
+import * as db from 'zapatos/db'
+import pool from '../db/pgPool'
 
 export const listUsers = 
   async (request: FastifyRequest, reply: FastifyReply) => {
@@ -11,21 +11,27 @@ export const listUsers =
     .then((users) => reply.send({ data: users }))
 }
 
-export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
+/*export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
-    /*const userId = request.params['userId'];
+    const userId = request.params['userId'];
     return db.sql<s.users.SQL, s.users.Selectable[]>`SELECT * FROM ${"users"} WHERE ${"id"}=${db.param(userId)}`
     .run(pool)
-    .then((users) => ({ data: users }))*/
-}
+    .then((users) => ({ data: users }))
+}*/
 
 export const addUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
-    /*const userName = request.body['name'];
+    console.log(request.body);
+    /*const {
+        username,
+        email, 
+        password
+      } = request.body;
+    
     //const userCount = db.sql`SELECT COUNT(*) FROM ${"users"}`
     //console.log(userCount)
     const id = listUsers.length + 1 
-    return db.sql<s.users.SQL, s.users.Selectable[]>`INSERT INTO ${"users"} VALUES (${db.param(id)}, ${db.param(userName)})`
+    return db.sql<s.users.SQL, s.users.Selectable[]>`INSERT INTO ${"users"} VALUES (${db.param(id)}, ${db.param(username)}, ${db.param(email)}, ${db.param(password)})`
     .run(pool)
     .then((users) => reply.send({ data: users }))*/
 } 
