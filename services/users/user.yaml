@@ -197,53 +197,6 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/AllUsers'
-  /creatures:
-    get:
-      tags:
-        - developers
-      summary: Get the list of creatures of the given user by id
-      description: Get the list of creatures of the given user by id
-      operationId: get_creatures_byid
-      parameters:
-        - name: id
-          in: path
-          description: user id of the account
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses: 
-        '200':
-          description: get the list of creatures successfully
-          content:
-            application/json:
-              schema: 
-                $ref: '#/components/schemas/AllCreatures'
-    # post: 
-    #   tags:
-    #     users
-    #   summary: Add a new creature for user
-    #   description: Add a new creature for user
-    #   operationId: add_creature_user
-    #   parameters:
-    #     - name: id
-    #       in: path
-    #       description: user id of the account
-    #       required: true
-    #       style: simple
-    #       schema:
-    #         type: string
-    #     - name: creature
-    #       in: query
-    #       description: the name of creature
-    #       style: form
-    #       schema:
-    #         type: string
-    #   responses:
-    #     '201':
-    #       description: Creature created for user successfully
-    #     '409':
-    #       description: an existing user already exists
   
   /delete_player:
     delete:

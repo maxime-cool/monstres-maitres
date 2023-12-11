@@ -105,3 +105,42 @@ paths:
           description: round updated successfully
         '400':
           description: Bad request with bad information
+  /round_details:
+    get:
+      tags:
+        - developers
+      summary: Get the details of a round
+      description: Get the details of a round
+      operationId: get_details_round
+      responses:
+        '200':
+          description: got the details of the round successfully
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/RoundDetail'
+
+components:
+  schemas:
+    RoundDetail:
+      type: object
+      required:
+        - creatures_masters
+        - status
+      properties:
+        creatures_masters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/creature_master'
+        status:
+          type: string
+          enum:
+            - in progress
+            - finished
+          example: finished
+        winner:
+          type: string
+          example: creature1
+          nullable: true
+          if: "status !== 'in_progress'"
