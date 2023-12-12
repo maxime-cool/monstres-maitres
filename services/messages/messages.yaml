@@ -27,7 +27,7 @@ paths:
     get:
       tags:
       - users
-      summary: get the messages from a user
+      summary: get the messages of a user
       operationId: get_messages_by_userid
       parameters:
       - name: userid

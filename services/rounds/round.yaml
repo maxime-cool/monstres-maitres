@@ -16,7 +16,7 @@ tags:
 servers:
   - url: https://api.server.round/v1
 paths:
-  /create:
+  /new_round:
     post:
       tags:
         - users

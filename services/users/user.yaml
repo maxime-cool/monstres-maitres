@@ -169,7 +169,7 @@ paths:
             description: update the user credit successfully
         '400':
           description: user not found
-  /player_get_players:
+  /get_players:
     get:
       tags:
         - developers

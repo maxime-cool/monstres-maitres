@@ -33,7 +33,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Monstre'
-    /monstre/{masterid}:
+  /monstre/{masterid}:
     get:
       tags:
       - users
@@ -57,6 +57,17 @@ paths:
                 $ref: '#/components/schemas/AllMonsters'
         "400":
           description: bad input parameter
+  /team:
+    put:
+      tags:
+      - users
+      operationId: create_team
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monstre'
 components:
   schemas:
     AllMonsters:
