@@ -4,7 +4,7 @@ import type * as s from 'zapatos/schema'
 import * as db from 'zapatos/db'
 import pool from '../db/pgPool'
 
-export const listUsers = 
+export var listUsers = 
   async (request: FastifyRequest, reply: FastifyReply) => {
     return db.sql<s.users.SQL, s.users.Selectable[]>`SELECT * FROM ${"users"}`
     .run(pool)
@@ -22,18 +22,18 @@ export const listUsers =
 export const addUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
     console.log(request.body);
-    /*const {
+    let obj: any = request.body;
+    const {
         username,
         email, 
         password
-      } = request.body;
-    
-    //const userCount = db.sql`SELECT COUNT(*) FROM ${"users"}`
-    //console.log(userCount)
-    const id = listUsers.length + 1 
-    return db.sql<s.users.SQL, s.users.Selectable[]>`INSERT INTO ${"users"} VALUES (${db.param(id)}, ${db.param(username)}, ${db.param(email)}, ${db.param(password)})`
+      } = obj;
+    let date = new Date();
+    let ajd = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+    const userCount= await db.sql`SELECT COUNT(*) FROM ${"users"}`.run(pool);
+    let id : number = userCount[0].count;
+    return db.sql<s.users.SQL, s.users.Selectable[]>`INSERT INTO ${"users"} VALUES (${db.param(id)}, ${db.param(username)}, ${db.param(email)}, ${db.param(password)}, ${db.param(ajd)})`
     .run(pool)
-    .then((users) => reply.send({ data: users }))*/
 } 
 
 /*
