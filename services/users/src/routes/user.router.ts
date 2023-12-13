@@ -6,28 +6,28 @@ async function userRouter(fastify: FastifyInstance) {
 
     fastify.route({
         method: 'POST',
-        url: '/',
+        url: '/create_account',
         schema: userCreateSchema,
         handler: controllers.addUser
     }) 
 
-    /*fastify.route({
+    fastify.route({
         method: 'GET',
-        url: '/',
+        url: '/get_players',
         handler: controllers.listUsers
     })
 
     fastify.route({
         method: 'GET',  
-        url: '/:userId',
+        url: '/get_player/:id',
         handler: controllers.getUser
     }) 
 
-     fastify.route({
+    fastify.route({
         method: 'PUT',
-        url: '/:userId',
-        handler: controllers.updateUser
-    })  */
+        url: '/credits/:id',
+        handler: controllers.updateCredits
+    })  
 }
 
 export default userRouter

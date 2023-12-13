@@ -6,22 +6,22 @@ import pool from '../db/pgPool'
 
 export var listUsers = 
   async (request: FastifyRequest, reply: FastifyReply) => {
-    return db.sql<s.users.SQL, s.users.Selectable[]>`SELECT * FROM ${"users"}`
+    let result = db.sql<s.users.SQL, s.users.Selectable[]>`SELECT id, username, created_at, role, total_matches, won_matches, credits FROM ${"users"}`
     .run(pool)
-    .then((users) => reply.send({ data: users }))
+    return reply.send(await result)
 }
 
-/*export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
+export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
-    const userId = request.params['userId'];
-    return db.sql<s.users.SQL, s.users.Selectable[]>`SELECT * FROM ${"users"} WHERE ${"id"}=${db.param(userId)}`
+    let obj: any = request.params;
+    const userId = obj['id'];
+    let result = db.sql<s.users.SQL, s.users.Selectable[]>`SELECT * FROM ${"users"} WHERE ${"id"}=${db.param(userId)}`
     .run(pool)
-    .then((users) => ({ data: users }))
-}*/
+    return reply.send(await result)
+}
 
 export const addUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
-    console.log(request.body);
     let obj: any = request.body;
     const {
         username,
@@ -29,86 +29,21 @@ export const addUser = async (request: FastifyRequest, reply: FastifyReply) => {
         password
       } = obj;
     let date = new Date();
-    let ajd = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+    let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
     const userCount= await db.sql`SELECT COUNT(*) FROM ${"users"}`.run(pool);
     let id : number = userCount[0].count;
     return db.sql<s.users.SQL, s.users.Selectable[]>`INSERT INTO ${"users"} VALUES (${db.param(id)}, ${db.param(username)}, ${db.param(email)}, ${db.param(password)}, ${db.param(ajd)})`
     .run(pool)
 } 
 
-/*
-const staticUsers: IUser[] = [
-    {
-        id: 1,
-        name: 'Joyce Byers'
-      },
-      {
-        id: 2,
-        name: 'Jimmi Hopper'
-      },
-      {
-        id: 3,
-        name: 'Mike Wheeler'
-      },
-      {
-        id: 4,
-        name: 'Dustin Henderson'
-      },
-      {
-        id: 5,
-        name: 'Lucas Sinclair'
-      }
-]
+export const updateCredits = async (request: FastifyRequest, reply: FastifyReply) => {
 
-export const listUsers = async (request: FastifyRequest, reply: FastifyReply) => {
-
-    Promise.resolve(staticUsers)
-    .then((users) => {
-        reply.send({ data: users })
-    })
-}
-
-export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
-
-    const userId = request.params['userId'];
-    for (var user of staticUsers) {
-        if (user.id == userId) {
-            Promise.resolve(user)
-            .then((user) => {
-                reply.send({ data: user })
-            })
-        }
-    }
-}
-
-export const addUser = async (request: FastifyRequest, reply: FastifyReply) => {
-
-    const userName = request.body['name'];
-    
-    const newUser = <IUser>({
-        id: staticUsers.length+1,
-        name: userName,
-    })
-    
-    Promise.resolve(staticUsers.push(newUser))
-    .then(() => { reply.send({ data: { newUser }})})
-
-}
-
-export const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
-
-    const userId = request.params['userId'];
-    for (var user of staticUsers) {
-        if (user.id == userId) {
-
-            Object.keys(request.body).forEach((key) => {
-                user[key] = request.body[key]
-            })
-
-            Promise.resolve(user)
-            .then((user) => {
-                reply.send({ data: user })
-            })
-        }
-    }
-} */
+    let obj: any = request.params;
+    const userId = obj['id'];
+    let obj2: any = request.body;
+    let newCredits : number = obj2['credits']
+    db.sql<s.users.SQL, s.users.Selectable[]>`UPDATE ${"users"} SET ${"credits"} = ${db.param(newCredits)} where ${"id"}=${db.param(userId)} `.run(pool)
+    console.log(newCredits)
+    let user = db.sql<s.users.SQL, s.users.Selectable[]>`SELECT * FROM ${"users"} WHERE ${"id"}=${db.param(userId)}`.run(pool)
+    return (reply.send(await user))
+} 
