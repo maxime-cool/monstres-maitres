@@ -1,0 +1,13 @@
+{
+    "db": {
+      "connectionString": "postgres://gzhzgqej:Rqwaa6gVp7WkLGwQfOkHXZampk10DwVI@drona.db.elephantsql.com/gzhzgqej"
+
+    },
+    "outDir": "./src",
+    "schemas": {
+      "public": {
+        "include": ["rounds"],
+        "exclude": []
+      }
+    }
+  }
