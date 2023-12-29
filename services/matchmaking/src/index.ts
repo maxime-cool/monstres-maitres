@@ -14,7 +14,7 @@ const startServer = async () => {
             server.log.error(error, address);
         }
 
-        server.register(matchRouter, { prefix : '/api/users'})
+        server.register(matchRouter, { prefix : '/api/matchmaking'})
         server.listen({host, port }, errorHandler)
     } catch (e) {
         console.error(e)

@@ -1,0 +1,13 @@
+{
+    "db": {
+      "connectionString": "postgres://vlewkoke:mMhLStpDQAL8f7y_E5A7R_epBWtF1ag4@berry.db.elephantsql.com/vlewkoke"
+
+    },
+    "outDir": "./src",
+    "schemas": {
+      "public": {
+        "include": ["matchmaking"],
+        "exclude": []
+      }
+    }
+  }
