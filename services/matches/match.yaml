@@ -24,17 +24,17 @@ paths:
       description: Create a new match
       operationId: create_match
       parameters:
-        - name: user_id
-          in: path
+        - name: player1
+          in: query
           description: user id of the user who create the match
           required: true
-          style: simple
+          style: form
           schema:
             type: string
-        - name: inviters
+        - name: player2
           in: query
           description: users who are invited into this match
-          required: false
+          required: true
           style: form
           schema:
             type: array
@@ -50,7 +50,7 @@ paths:
         - admins
       summary: Get the list of all the matches
       description: Get the list of all the matches
-      operationId: get_list_matches
+      operationId: listMatches
       responses:
         '200':
           description: got the list of matches successfully
@@ -58,13 +58,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MatchList'
-  /match_details:
+  /match/{match_id}:
     get:
       tags:
         - developers
       summary: Get the details of a match
       description: Get the details of a match
       operationId: get_details_match
+      parameters:
+      - name: match_id
+        in: path
+        description: the id of the match
+        required: true
+        type: simple
+        schema:
+          type: string
       responses:
         '200':
           description: got the details of the matche successfully
@@ -91,8 +99,8 @@ paths:
       post:
         tags:
           - users
-        summary: join an open match or team with invitation
-        description: join an open match or team with invitation
+        summary: join a match with invitation
+        description: join a match with invitation
         operationId: join_match
         parameters:
           - name: match_id
@@ -109,20 +117,18 @@ paths:
             style: form
             schema:
               type: string
-          - inviter:
-            in: query
-            description: user id of inviter if exists
-            required: false
-            style: form
-            schema:
-              type: string
           - name: team
             in: query
-            description: the team want to join
+            description: the team that user belongs to
             required: true
             style: form
             schema:
               type: string
+        responses:
+          "200":
+            description: join with invitation successfully
+          "400":
+            description: invitation not found
 
   /play:
     put:
@@ -138,15 +144,16 @@ paths:
           description: the id of match
           required: true
           style: simple
-          schema: 
+          schema:
             type: string
-        - name: round
-          in: path
-          description: id of round in progress
-          required: true
-          style: simple
-          schema: 
-            type: string
+      responses:
+        "200":
+          description: the match state change
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/MatchDetail'
+
   /delete:
     delete:
       tags:
@@ -161,7 +168,16 @@ paths:
           required: true
           style: simple
           schema:
-            type: string   
+            type: string
+      responses:
+        "200":
+        description: delete successfully
+        content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/MatchDetail'
+      "400":
+        description: bad input match id
 
 components:
   schemas:
