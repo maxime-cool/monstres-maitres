@@ -1,7 +1,6 @@
 {
   "name": "monstres-maitres",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
@@ -18,9 +17,10 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "fastify": "^4.25.1",
+    "fastify": "^4.25.2",
     "fluent-json-schema": "^4.2.1",
     "pg": "^8.11.3",
     "zapatos": "^6.3.0"
-  }
+  },
+  "description": ""
 }

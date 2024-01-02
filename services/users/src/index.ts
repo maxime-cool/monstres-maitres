@@ -3,7 +3,7 @@ import userRouter from './routes/user.router'
 
 import 'dotenv/config'
 
-const port = 5000;
+const port = 5003;
 const host = '0.0.0.0'
 
 const startServer = async () => {

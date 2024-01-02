@@ -3,7 +3,7 @@ import roundsRouter from './routes/rounds.router'
 
 import 'dotenv/config'
 
-const port = 5001;
+const port = 5002;
 const host = '0.0.0.0'
 
 const startServer = async () => {

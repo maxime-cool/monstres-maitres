@@ -130,11 +130,11 @@ dist
 .pnp.*
 
 services/users/build
-services/users/src/zapatos
 services/badges/build
 services/dex/build
 services/market/build
 services/matchmaking/build
+services/matches/build
 services/messages/build
 services/monstres/build
 services/rounds/build
