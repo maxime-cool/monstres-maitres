@@ -1,0 +1,13 @@
+{
+    "db": {
+      "connectionString": "postgres://udyqvkax:xyUttWJh_P612tP-c3lWz6JJuVzz68Hy@flora.db.elephantsql.com/udyqvkax"
+
+    },
+    "outDir": "./src",
+    "schemas": {
+      "public": {
+        "include": ["monstres"],
+        "exclude": []
+      }
+    }
+  }

@@ -17,7 +17,7 @@ export const get_details_match = async (request: FastifyRequest<{ Params: { id: 
     if (isNaN(id)) {
         return reply.status(400).send({ error: 'Invalid user ID.' });
       }
-    let result = db.sql<s.matches.SQL, s.matches.Selectable[]>`SELECT * FROM ${"matches"} WHERE ${"id"}=${db.param(id)}`
+    let result = db.sql<s.matches.SQL, s.matches.Selectable[]>`SELECT * FROM ${"matches"} WHERE id=${db.param(id)}`
     .run(pool)
     return reply.send(await result)
 }

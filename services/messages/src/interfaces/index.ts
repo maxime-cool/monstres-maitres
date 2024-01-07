@@ -1,6 +1,6 @@
 import { TimestampString } from "zapatos/db";
 
-export interface IMatch {
+export interface IMessage {
     id: number;
     sent_at: TimestampString;
     from_id: number;

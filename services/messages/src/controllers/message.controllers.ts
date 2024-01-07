@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { IMatch } from "interfaces";
+import { IMessage } from "interfaces";
 import type * as s from 'zapatos/schema'
 import * as db from 'zapatos/db'
 import {pool} from '../db/pgPool'
