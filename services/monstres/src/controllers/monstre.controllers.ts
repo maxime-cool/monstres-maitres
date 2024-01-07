@@ -51,3 +51,14 @@ export const get_monstres_spare = async (request: FastifyRequest<{ Params: { id:
     return result
 }
 
+export const get_monstre_by_id = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+  const id: number = parseInt(request.params.id, 10);
+  if (isNaN(id)) {
+      return reply.status(400).send({ error: 'Invalid monstre ID.' });
+    }
+  const result = db.sql<s.monstres.SQL, s.monstres.Selectable[]>`
+  SELECT * FROM ${"monstres"} WHERE id = ${db.param(id)}
+  `.run(pool);
+  return result
+}
+

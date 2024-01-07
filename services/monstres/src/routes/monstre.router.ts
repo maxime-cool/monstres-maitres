@@ -19,6 +19,12 @@ async function monstreRouter(fastify: FastifyInstance) {
 
     fastify.route({
         method: 'GET',
+        url: '/monstre_by_id/:id',
+        handler: controllers.get_monstre_by_id
+    })
+
+    fastify.route({
+        method: 'GET',
         url: '/team/:id',
         handler: controllers.get_monstres_spare
     })

@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import type * as s from 'zapatos/schema'
 import * as db from 'zapatos/db'
 import {pool} from '../db/pgPool'
-
+import axios from 'axios';
 
 export const newRound = async (request: FastifyRequest, reply: FastifyReply) => {
 
@@ -36,8 +36,23 @@ export const updateRound = async (request: FastifyRequest, reply: FastifyReply) 
   const monstre_p2= await db.sql`SELECT monstre_p2 FROM ${"rounds"} where ${"match_id"} = ${db.param(match_id)} AND ${"round_nb"} = ${db.param(round_nb)}`.run(pool);
   const p1= await db.sql`SELECT p1 FROM ${"rounds"} where ${"match_id"} = ${db.param(match_id)} AND ${"round_nb"} = ${db.param(round_nb)}`.run(pool);
   const p2= await db.sql`SELECT p2 FROM ${"rounds"} where ${"match_id"} = ${db.param(match_id)} AND ${"round_nb"} = ${db.param(round_nb)}`.run(pool);
-  const puissance_p1 =  Math.floor(Math.random() * 100); 
-  const puissance_p2 =  Math.floor(Math.random() * 100); //récupérer puissance monstres grâce au endpoint adéquat de monstre
+  
+  const monstreServerUrl = `http://monstre:5004/api/monstres/monstre_by_id/${monstre_p1[0].monstre_p1}`;
+  const monstre = await axios.get(monstreServerUrl);
+  const dex_ref = monstre.data[0].dex_ref;
+
+  const dexServerUrl = `http://monstredex:5006/api/dex/get_monster/${dex_ref}`;
+  const dex = await axios.get(dexServerUrl);
+  const puissance_p1 = dex.data[0].base_power;
+
+  const monstreServerUrl2 = `http://monstre:5004/api/monstres/monstre_by_id/${monstre_p2[0].monstre_p2}`;
+  const monstre2 = await axios.get(monstreServerUrl2);
+  const dex_ref2 = monstre2.data[0].dex_ref;
+
+  const dexServerUrl2 = `http://monstredex:5006/api/dex/get_monster/${dex_ref2}`;
+  const dex2 = await axios.get(dexServerUrl2);
+  const puissance_p2 = dex2.data[0].base_power;
+
   let winner;
   let winnerId;
   if (puissance_p1 > puissance_p2){
