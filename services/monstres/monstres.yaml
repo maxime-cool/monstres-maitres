@@ -1,9 +1,7 @@
----
 openapi: 3.1.0
 info:
   title: Monstres API
   summary: This is the API of the Monstres service
-  description: 
 tags:
 - name: admins
   description: game admins
@@ -11,28 +9,73 @@ tags:
   description: can extract stats from the game
 - name: users
   description: default
+servers:
+  - url: http://0.0.0.0:5004/api/monstres
 paths:
   /monstre:
     post:
       tags:
       - users
-      operationId: add_monstre
+      operationId: create_monstre
+      parameters:
+        - name: dex_ref
+          in: query
+          description: reference id of the monstre
+          style: form
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: name of the monstre
+          style: form
+          required: true
+          schema:
+            type: string
+        - name: description
+          in: query
+          description: description of the monstre
+          style: form
+          required: true
+          schema:
+            type: string
+        - name: power
+          in: query
+          description: power level of the monstre
+          style: form
+          required: true
+          schema:
+            type: string
+        - name: master_id
+          in: query
+          description: master id of the monstre
+          style: form
+          required: true
+          schema:
+            type: string
+        - name: team_id
+          in: query
+          description: team id of the monstre
+          style: form
+          required: true
+          schema:
+            type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Monstre'
+          description: monstre created successfully
+        "400":
+          description: monstre can not create
     get:
       tags:
       - users
-      operationId: get_monstre
+      operationId: list_monstre
       responses:
         "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Monstre'
+
   /monstre/{masterid}:
     get:
       tags:
@@ -57,11 +100,20 @@ paths:
                 $ref: '#/components/schemas/AllMonsters'
         "400":
           description: bad input parameter
-  /team:
+
+  /team/{team_id}:
     put:
       tags:
       - users
       operationId: create_team
+      parameters:
+        - name: id
+          in: path
+          description: id of the team
+          required: true
+          style: simple
+          schema:
+            type: string
       responses:
         "200":
           content:
@@ -82,10 +134,10 @@ components:
         - puissance
         - nb_combats
         - nb_victoires
-        - master_id
-        - prix 
+        - master_id 
         - num_equipe
         - monsterdex_ref
+        - in_match
       properties:
         id:
           type: int
@@ -105,14 +157,14 @@ components:
         master_id:
           type: int 
           example: 2
-        prix:
-          type: int 
-          example: 200
         num_equipe:
           type: int 
           example: 1
         monsterdex_ref:
           type: int
           example: 3
+        in_match:
+          type: boolean
+          example: false
 
 
