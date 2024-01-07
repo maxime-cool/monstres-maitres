@@ -1,0 +1,13 @@
+{
+    "db": {
+      "connectionString": "postgres://uutudrmz:IgV84BHfnvfPCu3j5DI7oUKzwgyIz5_h@drona.db.elephantsql.com/uutudrmz"
+
+    },
+    "outDir": "./src",
+    "schemas": {
+      "public": {
+        "include": ["monstres"],
+        "exclude": []
+      }
+    }
+  }
