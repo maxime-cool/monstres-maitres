@@ -10,7 +10,7 @@ Processus :
 
 1. Allez d'abord sur le site GitHub et téléchargez tout le code dont vous avez besoin à l'aide de la commande : `git clone https://github.com/maxime-cool/monstres-maitres.git`
 
-2. Allez dans le dossier du code téléchargé dans le terminal : `cd monstres-maitres`
+2. Allez dans le dossier du code téléchargé dans le terminal : `cd monstres-maitres/services`
 
 3. Dans le répertoire de projet, exécutez la commande `docker-compose build` pour construire les images Docker pour les services. Cette commande construira les images en fonction des fichiers Dockerfile spécifiés dans le fichier `docker-compose.yml`.
 
