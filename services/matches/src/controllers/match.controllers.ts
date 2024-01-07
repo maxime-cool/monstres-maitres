@@ -53,27 +53,25 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
         const player1:number = result[0].p1;
         const player2:number = result[0].p2;
 
-        let i = 1;
+        let i = 0;
         let count = 0;
-
-        while (i<=num) {
+        while (i<num) {
             const roundcreateServerUrl = `http://0.0.0.0:5002/api/rounds/new_round/${matchId}`;
             let roundData = {
                 p1: player1,
                 p2: player2,
-                monster1: request.query.monster1,
-                monster2: request.query.monster2,
+                monstre_p1: request.query.monster1,
+                monstre_p2: request.query.monster2,
             };
-
             try {
                 const response = await axios.post(roundcreateServerUrl, roundData);
             
                 if (response.status === 200) {
                   console.log('new round created successfully.');
-                  await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i)} WHERE id = ${db.param(matchId)}`.run(pool);
+                  await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i+1)} WHERE id = ${db.param(matchId)}`.run(pool);
                   const serverUrl = `http://0.0.0.0:5002/api/rounds/update/${matchId}/${i}`;
                   try{
-                    let response = await axios.put(serverUrl);
+                    let response = await axios.put(serverUrl, {});
                     if (response.status === 200){
                         console.log('round finished successfully.');
                         let round_details = response.data;
@@ -93,16 +91,17 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
             console.error('Error creating round', error.message);
             }
         }
+        let status = "finished"
         if  (count>=3){
             let date = new Date();
             let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
             //status, winner, end_at update 
-            await db.sql`UPDATE ${"matches"} SET status = "finished", winner = ${db.param(player1)}, end_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
+            await db.sql`UPDATE ${"matches"} SET status = ${db.param(status)}, winner = ${db.param(player1)}, ended_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
         }else{
             let date = new Date();
             let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
             //status, winner, end_at update 
-            await db.sql`UPDATE ${"matches"} SET status = "finished", winner = ${db.param(player2)}, end_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
+            await db.sql`UPDATE ${"matches"} SET status = ${db.param(status)}, winner = ${db.param(player2)}, ended_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
         }
     }else{
         console.error('Invalid match ID');
