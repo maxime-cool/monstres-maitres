@@ -5,8 +5,6 @@ import * as db from 'zapatos/db'
 import {pool} from '../db/pgPool'
 import axios from 'axios';
 
-
-
 export var listMatches = 
   async (request: FastifyRequest, reply: FastifyReply) => {
     let result = db.sql<s.matches.SQL, s.matches.Selectable[]>`SELECT * FROM ${"matches"}`
@@ -95,7 +93,7 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
                   return 'Error creating round'
                 }
             } catch (error) {
-                console.error('Error creating round', error.message);
+            console.error('Error creating round', error.message);
             }
         }
         if  (count>=3){

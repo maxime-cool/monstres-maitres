@@ -1,0 +1,44 @@
+version: '3'
+services:
+  match:
+    build:
+      context: matches
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+  matchmaking:
+    build:
+      context: matchmaking
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+  rounds:
+    build:
+      context: rounds
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+  users:
+    build:
+      context: users
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003"
+  #monstre:
+   # build:
+   #   context: use
+    #  dockerfile: Dockerfile
+   # ports:
+    #  - "5004:5004"
+  market:
+    build:
+      context: market
+      dockerfile: Dockerfile
+    ports:
+      - "5005:5005"
+  monstredex:
+    build:
+      context: dex
+      dockerfile: Dockerfile
+    ports:
+      - "5006:5006"
