@@ -23,9 +23,9 @@ export const buyMonster = async (request: FastifyRequest, reply: FastifyReply) =
     };
     const monstreServerUrl = `http://monstre:5004/api/monstres/monstre`;
     const response = await axios.post(monstreServerUrl, monstreData);
-    //TODO
-    const price = dexResult.base_price;
+    const creditUser : number = await axios.get(`http://users:5003/api/users/credits/${master_id}`);
+    const price = creditUser - dexResult.base_price;
     const serverUrl = `http://users:5003/api/users/credits/${master_id}`
-    await axios.put(serverUrl, {});
+    await axios.put(serverUrl, { credits : price});
 }
 
