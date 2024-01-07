@@ -57,7 +57,7 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
         } = obj;
 
         while (i<num) {
-            const roundcreateServerUrl = `http://0.0.0.0:5002/api/rounds/new_round/${matchId}`;
+            const roundcreateServerUrl = `http://rounds:5002/api/rounds/new_round/${matchId}`;
             let roundData = {
                 p1: player1,
                 p2: player2,
@@ -71,7 +71,7 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
                   console.log('new round created successfully.');
                   await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i+1)} WHERE id = ${db.param(matchId)}`.run(pool);
                   await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i+1)} WHERE id = ${db.param(matchId)}`.run(pool);
-                  const serverUrl = `http://0.0.0.0:5002/api/rounds/update/${matchId}/${i}`;
+                  const serverUrl = `http://rounds:5002/api/rounds/update/${matchId}/${i}`;
                   try{
                     let response = await axios.put(serverUrl,{});
                     if (response.status === 200){
@@ -97,7 +97,7 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
         if  (count>=3){
             let date = new Date();
             let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
-            const serverUrl = `http://0.0.0.0:5003/api/users/credits/${player1}`
+            const serverUrl = `http://users:5003/api/users/credits/${player1}`
             await axios.put(serverUrl, {});
             //status, winner, end_at update 
             return await db.sql`UPDATE ${"matches"} SET status = ${db.param(status)}, winner = ${db.param(player1)}, ended_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
@@ -105,7 +105,7 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
             let date = new Date();
             let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
             //status, winner, end_at update 
-            const serverUrl = `http://0.0.0.0:5003/api/users/credits/${player2}`
+            const serverUrl = `http://users:5003/api/users/credits/${player2}`
             await axios.put(serverUrl, {});
             return await db.sql`UPDATE ${"matches"} SET status = ${db.param(status)}, winner = ${db.param(player2)}, ended_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
         }
