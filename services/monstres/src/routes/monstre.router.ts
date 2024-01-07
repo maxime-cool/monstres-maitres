@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify/types/instance";
 import * as controllers from '../controllers/monstre.controllers'
 import { monstreCreateSchema} from "../schemas/monstre.schema";
 
-async function messageRouter(fastify: FastifyInstance) {
+async function monstreRouter(fastify: FastifyInstance) {
 
     fastify.route({
         method: 'POST',
@@ -31,4 +31,4 @@ async function messageRouter(fastify: FastifyInstance) {
 
 }
 
-export default messageRouter
+export default monstreRouter

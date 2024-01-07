@@ -4,7 +4,7 @@ import * as controllers from '../controllers'
 async function marketRouter(fastify: FastifyInstance) {
 
     fastify.route({
-        method: 'GET',
+        method: 'POST',
         url: '/buy_monster',
         handler: controllers.buyMonster
     }) 
