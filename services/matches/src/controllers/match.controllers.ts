@@ -98,9 +98,9 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
             let date = new Date();
             let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
             const serverUrl = `http://users:5003/api/users/credits/${player1}`
-            const response = await axios.get(serverUrl, {});
-            let credits = response.data[0].credits +1
-            await axios.put(serverUrl, {});
+            const creditUser : number = await axios.get(serverUrl, {});
+            let credits = creditUser +1
+            await axios.put(serverUrl, { credits : credits});
             //status, winner, end_at update 
             return await db.sql`UPDATE ${"matches"} SET status = ${db.param(status)}, winner = ${db.param(player1)}, ended_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
         }else{
@@ -108,9 +108,9 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
             let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
             //status, winner, end_at update 
             const serverUrl = `http://users:5003/api/users/credits/${player2}`
-            const response = await axios.get(serverUrl, {});
-            let credits = response.data[0].credits +1
-            await axios.put(serverUrl, {});
+            const creditUser : number = await axios.get(serverUrl, {});
+            let credits = creditUser +1
+            await axios.put(serverUrl, { credits : credits});
             return await db.sql`UPDATE ${"matches"} SET status = ${db.param(status)}, winner = ${db.param(player2)}, ended_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
         }
     }else{
