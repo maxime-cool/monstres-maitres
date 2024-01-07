@@ -73,7 +73,7 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
                   await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i)} WHERE id = ${db.param(matchId)}`.run(pool);
                   const serverUrl = `http://0.0.0.0:5002/api/rounds/update/${matchId}/${i}`;
                   try{
-                    let response = await axios.update(serverUrl);
+                    let response = await axios.put(serverUrl);
                     if (response.status === 200){
                         console.log('round finished successfully.');
                         let round_details = response.data;

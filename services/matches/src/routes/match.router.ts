@@ -25,7 +25,7 @@ async function matchRouter(fastify: FastifyInstance) {
 
     fastify.route({
         method: 'PUT',
-        url: '/play',
+        url: '/play/:id',
         handler: controllers.play_match
     })
 
