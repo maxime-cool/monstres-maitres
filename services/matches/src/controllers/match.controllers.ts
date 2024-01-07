@@ -5,11 +5,6 @@ import * as db from 'zapatos/db'
 import {pool} from '../db/pgPool'
 import axios from 'axios';
 
-interface QueryParams {
-    monster1?: string | undefined;
-    monster2?: string | undefined;
-}
-
 export var listMatches = 
   async (request: FastifyRequest, reply: FastifyReply) => {
     let result = db.sql<s.matches.SQL, s.matches.Selectable[]>`SELECT * FROM ${"matches"}`
@@ -44,7 +39,7 @@ export const create_match = async (request: FastifyRequest, reply: FastifyReply)
     .run(pool)
 }
 
-export const play_match = async (request: FastifyRequest<{ Params: { id: string }; Querystring: QueryParams }>, reply: FastifyReply) => {
+export const play_match = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
     const matchId: number = parseInt(request.params.id, 10);
     const num: number = 5;
     
@@ -55,17 +50,22 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
 
         let i = 0;
         let count = 0;
+        let obj: any = request.body;
+        const {
+            monster1,
+            monster2
+        } = obj;
         while (i<num) {
             const roundcreateServerUrl = `http://0.0.0.0:5002/api/rounds/new_round/${matchId}`;
             let roundData = {
                 p1: player1,
                 p2: player2,
-                monstre_p1: request.query.monster1,
-                monstre_p2: request.query.monster2,
+                monstre_p1: monster1,
+                monstre_p2: monster2,
             };
             try {
                 const response = await axios.post(roundcreateServerUrl, roundData);
-            
+                console.log(monster1)
                 if (response.status === 200) {
                   console.log('new round created successfully.');
                   await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i+1)} WHERE id = ${db.param(matchId)}`.run(pool);
