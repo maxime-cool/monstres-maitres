@@ -54,8 +54,7 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
         } = obj;
         let i = 1;
         let count = 0;
-
-        while (i<=num) {
+        while (i<num) {
             const roundcreateServerUrl = `http://0.0.0.0:5002/api/rounds/new_round/${matchId}`;
             let roundData = {
                 p1: player1,
@@ -68,7 +67,7 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
 
             try {
                 const response = await axios.post(roundcreateServerUrl, roundData);
-            
+                console.log(monster1)
                 if (response.status === 200) {
                   console.log('new round created successfully.');
                   await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i)} WHERE id = ${db.param(matchId)}`.run(pool);
@@ -100,12 +99,17 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
             let date = new Date();
             let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
             //status, winner, end_at update 
-            await db.sql`UPDATE ${"matches"} SET status = "finished", winner = ${db.param(player1)}, end_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
+            const userServerurl = `http://0.0.0.0:5003/api/users/credits/${player1}`
+            await axios.put(userServerurl);
+            return await db.sql`UPDATE ${"matches"} SET status = "finished", winner = ${db.param(player1)}, end_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
+
         }else{
             let date = new Date();
             let ajd = (date.getMonth()+1)+"/"+ date.getDate()+"/"+date.getFullYear();
             //status, winner, end_at update 
-            await db.sql`UPDATE ${"matches"} SET status = "finished", winner = ${db.param(player2)}, end_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
+            const userServerurl = `http://0.0.0.0:5003/api/users/credits/${player2}`
+            await axios.put(userServerurl);
+            return await db.sql`UPDATE ${"matches"} SET status = "finished", winner = ${db.param(player2)}, end_at = ${db.param(ajd)} WHERE id = ${db.param(matchId)}`.run(pool);
         }
     }else{
         console.error('Invalid match ID');

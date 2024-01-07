@@ -1,34 +1,62 @@
----
 openapi: 3.1.0
 info:
   title: Message API
   summary: This is the API of the message service
-  description: 
+  license:
+    name: GPL v3
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  version: '1.0'
 tags:
-- name: admins
-  description: game admins
-- name: reporters
-  description: can extract stats from the game
-- name: users
-  description: default
+  - name: admins
+    description: game admins
+  - name: reporters
+    description: can extract stats from the game
+  - name: users
+    description: default
+servers:
+  - url: http://0.0.0.0:5006/api/messages
+
 paths:
-  /message/{userid}:
+  /sent_message:
     post:
       tags:
-      - users
+       - users
+      summary: send a message to user
       operationId: send_message
+      parameters:
+        - name: from_id
+          in: query
+          description: user id who send the message
+          style: form
+          required: true
+          schema:
+            type: string
+        - name: to_id
+          in: query
+          description: user id who receive the message
+          style: form
+          required: true
+          schema:
+            type: string
+        - name: content
+          in: query
+          description: the message content
+          style: form
+          required: true
+          schema:
+            type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-    /message/{userid}:
+          description: message sent successfully
+        "400":
+          description: user id not found
+      
+    /message:
     get:
       tags:
       - users
       summary: get the messages of a user
-      operationId: get_messages_by_userid
+      operationId: get_messages_byuser
       parameters:
       - name: userid
         in: path

@@ -10,6 +10,8 @@ tags:
     description: can extract stats from the game
   - name: users
     description: default
+servers:
+  - url: http://0.0.0.0:5001/api/matchmaking
 paths:
   /list:
     get:
@@ -23,37 +25,71 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AllPendingMatches'
-  /research:
-    post: 
+  /search:
+    get: 
       tags:
         - users
-      summary: a user wants to play a match - they're waiting for an opponent
+      summary: a user wants to play an open match - get the list of open matches
+      responses:
+        "200":
+          description: got the list of pending matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllPendingMatches'
+
+  /make_match:
+    post:
+      tags:
+        - users
+      summary: create a match making with an opponent or not
       parameters:
-        - name: user_id
+        - name: p1
           in: query
-          description: ID of the user opening the match
+          description: the first player who create the match making
           required: true
           schema:
             type: string
-        - name: open
+        - name: p2
           in: query
-          description: equals false if match is private, true if it is open to everyone
-          required: true
-          schema:
-            type: boolean
-        - name: opponent
-          in: query
-          description: if match is private, the ID of the challenged user
+          description: the second player who is invited to the match
           required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '201':
+          description: matchmaking created successfully
+        '409':
+          description: User can not create the match
+
+  /join:
+    put:
+      tags:
+        - users
+      summary: user to join a making match to crate a match
+      parameters:
+        - name: matchmaking
+          in: query
+          description: the id of a matchmaking
+          required: true
+          style: form
+          schema:
+            type: string
+        - name: player
+          in: query
+          description: the id of the user want to join this match making
+          required: true
+          style: form
           schema:
             type: string
       responses:
         '200':
-          description: pending match created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PendingMatch'
+          description: match created successfully
+        '400':
+          description: match can not create
+
+  /delete:    
     delete:
       tags:
         - users
@@ -62,6 +98,7 @@ paths:
         - name: user_id
           in: query
           description: ID of the user searching for the match
+          style: form
           required: true
           schema:
             type: string
@@ -79,6 +116,8 @@ components:
         - p1
         - created_at
         - open
+        - p2
+        - match_create
       properties:
         p1:
           type: integer
@@ -88,9 +127,12 @@ components:
         open: 
           type: boolean
           example: true
-        opponent:
+        p2:
           type: string
           example: 44 # a user id
+        match_create:
+          type: boolean
+          example: false
     AllPendingMatches:
       type: array
       items:
