@@ -5,10 +5,7 @@ import * as db from 'zapatos/db'
 import {pool} from '../db/pgPool'
 import axios from 'axios';
 
-interface QueryParams {
-    monster1?: string | undefined;
-    monster2?: string | undefined;
-}
+
 
 export var listMatches = 
   async (request: FastifyRequest, reply: FastifyReply) => {
@@ -44,7 +41,7 @@ export const create_match = async (request: FastifyRequest, reply: FastifyReply)
     .run(pool)
 }
 
-export const play_match = async (request: FastifyRequest<{ Params: { id: string }; Querystring: QueryParams }>, reply: FastifyReply) => {
+export const play_match = async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
     const matchId: number = parseInt(request.params.id, 10);
     const num: number = 5;
     
@@ -52,7 +49,11 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
     if (result.length > 0) {
         const player1:number = result[0].p1;
         const player2:number = result[0].p2;
-
+        let obj: any = request.body;
+        const {
+            monster1,
+            monster2
+        } = obj;
         let i = 1;
         let count = 0;
 
@@ -61,9 +62,11 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
             let roundData = {
                 p1: player1,
                 p2: player2,
-                monster1: request.query.monster1,
-                monster2: request.query.monster2,
+                monster_p1: monster1,
+                monster_p2: monster2,
             };
+
+            console.log(monster1)
 
             try {
                 const response = await axios.post(roundcreateServerUrl, roundData);
@@ -82,15 +85,17 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
                         i = i+1;
                     }else{
                         console.error('Error playing round', response.status, response.data);
+                        return "error"
                     }
                   }catch (error) {
                     console.error('Error playing round', error.message);
                   }
                 } else {
                   console.error('Error creating round', response.status, response.data);
+                  return 'Error creating round'
                 }
             } catch (error) {
-            console.error('Error creating round', error.message);
+                console.error('Error creating round', error.message);
             }
         }
         if  (count>=3){
