@@ -24,12 +24,6 @@ async function matchRouter(fastify: FastifyInstance) {
     }) 
 
     fastify.route({
-        method: 'POST',
-        url: '/join',
-        handler: controllers.join_match
-    })
-
-    fastify.route({
         method: 'PUT',
         url: '/play',
         handler: controllers.play_match

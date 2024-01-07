@@ -2,7 +2,7 @@ import { TimestampString } from "zapatos/db";
 
 export interface IMatch {
     id: number;
-    status:  'waiting' | 'in progress' | 'finished' | 'cancelled';
+    status:  'in progress' | 'finished' | 'cancelled';
     p1: number;
     p2: number;
     current_round: number;

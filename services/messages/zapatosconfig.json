@@ -1,0 +1,13 @@
+{
+    "db": {
+      "connectionString": "postgres://xocabush:F23f0X6yGgWWpyw3YFvMeksSKpTa2M2t@castor.db.elephantsql.com/xocabush"
+
+    },
+    "outDir": "./src",
+    "schemas": {
+      "public": {
+        "include": ["messages"],
+        "exclude": []
+      }
+    }
+  }
