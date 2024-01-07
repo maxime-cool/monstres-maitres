@@ -29,7 +29,7 @@ export const create_matchmaking = async (request: FastifyRequest, reply: Fastify
         p2
       } = obj;
     if (p2 !== undefined) {
-      const messagesServerUrl = 'http://0.0.0.0:5006/api/messages/sent_message';
+      const messagesServerUrl = 'http://messages:5007/api/messages/sent_message';
       let content = `Player ${p1} has sent you an invitation to a match, the matchmaking number is ${id}`;
       let messageData = {
         from_id: p1,  
@@ -81,7 +81,7 @@ export const join_match = async (request: FastifyRequest, reply: FastifyReply) =
         const p2: number = result[0].p2;
         if (p2 == player){
           //create_match
-          const matchServerUrl = 'http://0.0.0.0:5000/api/matches/create_match';
+          const matchServerUrl = 'http://match:5000/api/matches/create_match';
           let matchData = {
             player1: p1,
             player2: p2,
@@ -107,7 +107,7 @@ export const join_match = async (request: FastifyRequest, reply: FastifyReply) =
     else{
       if(match_create === false){
           //create_match
-          const matchServerUrl = 'http://0.0.0.0:5000/api/matches/create_match';
+          const matchServerUrl = 'http://match:5000/api/matches/create_match';
           let matchData = {
             player1: p1,
             player2: player

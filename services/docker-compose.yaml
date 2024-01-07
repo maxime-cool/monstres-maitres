@@ -42,3 +42,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5006:5006"
+  messages:
+    build:
+      context: messages
+      dockerfile: Dockerfile
+    ports:
+      - "5007:5007"

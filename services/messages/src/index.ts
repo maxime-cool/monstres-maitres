@@ -3,7 +3,7 @@ import matchRouter from './routes/message.router'
 
 import 'dotenv/config'
 
-const port = 5006;
+const port = 5007;
 const host = '0.0.0.0'
 
 const startServer = async () => {
