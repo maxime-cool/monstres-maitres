@@ -52,28 +52,27 @@ export const play_match = async (request: FastifyRequest<{ Params: { id: string 
             monster1,
             monster2
         } = obj;
-        let i = 1;
+
+        let i = 0;
         let count = 0;
         while (i<num) {
             const roundcreateServerUrl = `http://0.0.0.0:5002/api/rounds/new_round/${matchId}`;
             let roundData = {
                 p1: player1,
                 p2: player2,
-                monster_p1: monster1,
-                monster_p2: monster2,
+                monstre_p1: monster1[i],
+                monstre_p2: monster2[i],
             };
-
-            console.log(monster1)
-
+            console.log(roundData)
             try {
                 const response = await axios.post(roundcreateServerUrl, roundData);
                 console.log(monster1)
                 if (response.status === 200) {
                   console.log('new round created successfully.');
-                  await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i)} WHERE id = ${db.param(matchId)}`.run(pool);
+                  await db.sql`UPDATE ${"matches"} SET current_round = ${db.param(i+1)} WHERE id = ${db.param(matchId)}`.run(pool);
                   const serverUrl = `http://0.0.0.0:5002/api/rounds/update/${matchId}/${i}`;
                   try{
-                    let response = await axios.put(serverUrl);
+                    let response = await axios.put(serverUrl,{});
                     if (response.status === 200){
                         console.log('round finished successfully.');
                         let round_details = response.data;
