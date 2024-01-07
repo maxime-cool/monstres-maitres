@@ -39,10 +39,21 @@ export const addUser = async (request: FastifyRequest, reply: FastifyReply) => {
 export const updateCredits = async (request: FastifyRequest, reply: FastifyReply) => {
 
     let obj: any = request.params;
-    const userId = obj['id'];  
-    await db.sql<s.users.SQL, s.users.Selectable[]>`
-            UPDATE ${"users"} SET ${"credits"} = COALESCE(${"credits"}, 0) + 1 WHERE ${"id"} = ${db.param(userId)}
-        `.run(pool);
+    const userId = obj['id'];
+    let obj2: any = request.body;
+    let newCredits : number = obj2['credits']
+    db.sql<s.users.SQL, s.users.Selectable[]>`UPDATE ${"users"} SET ${"credits"} = ${db.param(newCredits)} where ${"id"}=${db.param(userId)} `.run(pool)
+    console.log(newCredits)
     let user = db.sql<s.users.SQL, s.users.Selectable[]>`SELECT * FROM ${"users"} WHERE ${"id"}=${db.param(userId)}`.run(pool)
     return (reply.send(await user))
 } 
+
+export const getCredits_byuser = async (request: FastifyRequest, reply: FastifyReply) => {
+
+    let obj: any = request.params;
+    const userId = obj['id'];
+    let user = db.sql<s.users.SQL, s.users.Selectable[]>`SELECT credits FROM ${"users"} WHERE ${"id"}=${db.param(userId)}`.run(pool)
+    return (reply.send(await user))
+} 
+
+

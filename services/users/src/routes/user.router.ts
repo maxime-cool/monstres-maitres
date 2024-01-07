@@ -27,6 +27,12 @@ async function userRouter(fastify: FastifyInstance) {
         method: 'PUT',
         url: '/credits/:id',
         handler: controllers.updateCredits
+    })   
+
+    fastify.route({
+        method: 'GET',
+        url: '/credits/:id',
+        handler: controllers.getCredits_byuser
     })  
 }
 
